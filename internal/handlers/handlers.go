@@ -99,14 +99,20 @@ func (m *Repository) PostLogin(w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 	}
 
+	form := forms.New(r.PostForm)
+
 	email := r.Form.Get("login-email")
 	password := r.Form.Get("login-password")
 
-	form := forms.New(r.PostForm)
-	form.Required("email", "password")
-	form.Email("email")
+	form.Required("login-email", "login-password")
+	form.Email("login-email")
+
 	if !form.Valid() {
-		// TODO take user back to page
+		render.Template(w, r, "login.page.tmpl", &models.TemplateData{
+			Form: form,
+		})
+
+		return
 	}
 
 	id, _, err := m.DB.Authenticate(email, password)
@@ -120,7 +126,21 @@ func (m *Repository) PostLogin(w http.ResponseWriter, r *http.Request) {
 
 	m.App.Session.Put(r.Context(), "user_id", id)
 	m.App.Session.Put(r.Context(), "success", "Logged in successfully")
+
 	http.Redirect(w, r, "/", http.StatusSeeOther)
+}
+
+// Logout logs a user out
+func (m *Repository) Logout(w http.ResponseWriter, r *http.Request) {
+	_ = m.App.Session.Destroy(r.Context())
+	_ = m.App.Session.RenewToken(r.Context())
+
+	http.Redirect(w, r, "/user/login", http.StatusSeeOther)
+}
+
+// Dashboard logs a user out
+func (m *Repository) Dashboard(w http.ResponseWriter, r *http.Request) {
+	render.Template(w, r, "dashboard.page.tmpl", &models.TemplateData{})
 }
 
 type jsonResponse struct {

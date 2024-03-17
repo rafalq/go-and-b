@@ -251,3 +251,58 @@
 	</div>
 </section>
 {{ end }}
+
+{{define "js"}}
+<script>
+	const dateFormat = "yyyy-mm-dd";
+
+	// budget room
+	const budgetSubmitButton =
+		document.querySelector(
+			"#submit-button-budget"
+		);
+
+	const [budgetFormData, budgetDateRangePicker] =
+		createAvailbilityParams(
+			dateFormat,
+			"budget",
+			"2"
+		);
+
+	budgetSubmitButton.addEventListener(
+		"click",
+		(event) =>
+			searchAvailability(
+				event,
+				"budget",
+				budgetFormData,
+				budgetDateRangePicker
+			)
+	);
+
+	// suite room
+	const suiteSubmitButton =
+		document.querySelector(
+			"#submit-button-suite"
+		);
+
+	const [suiteFormData, suiteDateRangePicker] =
+		createAvailbilityParams(
+			dateFormat,
+			"suite",
+			"3"
+		);
+
+	suiteSubmitButton.addEventListener(
+		"click",
+		(event) =>
+			searchAvailability(
+				event,
+				"suite",
+				suiteFormData,
+				suiteDateRangePicker
+			)
+	);
+</script>
+{{ end }}
+

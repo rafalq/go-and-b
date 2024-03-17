@@ -34,8 +34,8 @@ func routes(app *config.AppConfig) http.Handler {
 	r.Post("/search-availability-json", handlers.Repo.AvailabilityJSON)
 	r.Post("/user/login", handlers.Repo.PostLogin)
 
-	fileServer := http.FileServer(http.Dir("./static/"))
-	r.Handle("/static/", http.StripPrefix("/static/", fileServer))
+	fileServer := http.FileServer(http.Dir("./static"))
+	r.Handle("/static/*", http.StripPrefix("/static", fileServer))
 
 	// tailwindcss wrapper
 	// r.Handle("/static/css/*", http.StripPrefix("/static/css", twhandler.New(http.Dir("static/css"), "/static/css", twembed.New())))

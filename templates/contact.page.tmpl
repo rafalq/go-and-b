@@ -1,0 +1,82 @@
+{{template "base" .}}
+
+{{define "css"}}
+<style type="text/tailwindcss">
+	@tailwind base;
+	@tailwind components;
+
+	.tooltip {
+		@apply invisible absolute;
+	}
+
+	.has-tooltip:hover .tooltip {
+		@apply visible z-50;
+	}
+
+	@tailwind utilities;
+</style>
+{{ end }}
+
+{{define "js"}}
+
+<script src="../static/js/form/renderFormWithValidation.js"></script>
+<script>
+	const formFields = [
+		{
+			name: "first name",
+			type: "input",
+			validators: ["required", "range-2-40"],
+		},
+		{
+			name: "last name",
+			type: "input",
+			validators: ["required", "range-2-40"],
+		},
+		{
+			name: "email",
+			type: "input",
+			validators: ["required", "email", "same-1"],
+		},
+		{
+			name: "confirm email",
+			type: "input",
+			validators: ["email", "same-2"],
+		},
+		{
+			name: "phone",
+			type: "input",
+			validators: ["numeric"],
+		},
+		{
+			name: "your message",
+			type: "textarea",
+			validators: ["required", "range-2-0"],
+		},
+		{
+			name: "send message",
+			type: "button",
+		},
+	];
+	const form = new Form(formFields, ".form");
+	form.render();
+
+	const validator = new FormValidator(
+		form,
+		formFields
+	);
+	validator.initialize();
+</script>
+{{ end }}
+
+{{define "content"}}
+<section
+	class="container px-4 mx-auto w-full sm:w-3/4 md:w-1/2 xl:w-1/3 bg-white py-4"
+>
+	<p
+		class="uppercase text-center font-bold text-gray-800 text-xl"
+	>
+		contact us
+	</p>
+	<div class="form"></div>
+</section>
+{{ end }}

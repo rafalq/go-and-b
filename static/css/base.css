@@ -1,0 +1,12 @@
+body {
+	min-height: 100vh;
+	position: relative;
+}
+#main {
+	padding: 4rem;
+}
+#footer {
+	height: 3rem;
+	position: absolute;
+	bottom: 0;
+}

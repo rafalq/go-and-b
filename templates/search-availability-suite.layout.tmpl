@@ -1,0 +1,62 @@
+{{define "search-availability-suite"}}
+<div
+	class="bg-blue-100 rounded-md p-5 md:p-10 w-full border-2 border-blue-400"
+>
+	<form
+		id="form-suite"
+		action="/search-availability-json"
+		method="POST"
+	>
+		<div class="flex gap-2 max-w-lg mx-auto">
+			<label
+				for="suite-start"
+				class="mb-5"
+			>
+				<span class="text-gray-600"
+					>Check-in Date</span
+				>
+				<input
+					type="text"
+					name="suite-start"
+					id="suite-start"
+					class="w-full bg-white ext-gray-800 rounded border border-gray-300 bg-inherit p-3 shadow shadow-gray-100 mt-2 outline-none focus:outline-blue-600 text-neutral-800"
+					placeholder="yyyy-mm-dd"
+					required
+				/>
+			</label>
+			<label
+				for="suite-end"
+				class="mb-5"
+			>
+				<span class="text-gray-600"
+					>Check-out Date</span
+				>
+				<input
+					type="text"
+					name="suite-end"
+					id="suite-end"
+					class="w-full bg-white text-gray-800 rounded border border-gray-300 bg-inherit p-3 shadow shadow-gray-100 mt-2 outline-none focus:outline-blue-600 text-neutral-800"
+					placeholder="yyyy-mm-dd"
+					required
+				/>
+			</label>
+		</div>
+		<div
+			class="flex items-center justify-center max-w-lg mx-auto"
+		>
+			<button
+				id="submit-button-suite"
+				type="submit"
+				class="lg:mt-3 bg-blue-500 px-4 py-3 rounded-md text-gray-100 w-full hover:bg-blue-400"
+			>
+				CHECK AVAILABILITY
+			</button>
+		</div>
+		<input
+			type="hidden"
+			name="csrf_token"
+			value="{{.CSRFToken}}"
+		/>
+	</form>
+</div>
+{{ end }}

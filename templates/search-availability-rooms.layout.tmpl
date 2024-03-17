@@ -1,0 +1,62 @@
+{{define "search-availability-rooms"}}
+<div
+	class="bg-orange-100 rounded-md p-5 md:p-10 w-full border-2 border-orange-400"
+>
+	<form
+		id="form-rooms"
+		action="/search-availability"
+		method="POST"
+	>
+		<div class="flex gap-2 max-w-xl mx-auto">
+			<label
+				for="start"
+				class="mb-5"
+			>
+				<span class="text-gray-600"
+					>Check-in Date</span
+				>
+				<input
+					type="text"
+					name="start"
+					id="start"
+					class="w-full text-gray-800 rounded border border-orange-300 bg-white p-3 shadow shadow-orange-100 mt-2 outline-none focus:outline-orange-600 text-neutral-800"
+					placeholder="yyyy-mm-dd"
+					required
+				/>
+			</label>
+			<label
+				for="end"
+				class="mb-5"
+			>
+				<span class="text-gray-600"
+					>Check-out Date</span
+				>
+				<input
+					type="text"
+					name="end"
+					id="end"
+					class="w-full text-gray-800 rounded border border-orange-300 bg-white p-3 shadow shadow-orange-100 mt-2 outline-none focus:outline-orange-600 text-neutral-800"
+					placeholder="yyyy-mm-dd"
+					required
+				/>
+			</label>
+		</div>
+		<div
+			class="flex items-center justify-center max-w-xl mx-auto"
+		>
+			<button
+				id="submit-button-rooms"
+				type="submit"
+				class="lg:mt-3 bg-orange-500 px-4 py-3 rounded-md text-orange-100 w-full hover:bg-orange-400"
+			>
+				CHECK AVAILABILITY
+			</button>
+		</div>
+		<input
+			type="hidden"
+			name="csrf_token"
+			value="{{.CSRFToken}}"
+		/>
+	</form>
+</div>
+{{ end }}

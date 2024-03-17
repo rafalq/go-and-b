@@ -1,0 +1,62 @@
+{{define "search-availability-budget"}}
+<div
+	class="bg-gray-100 rounded-md p-5 md:p-10 w-full border-2 border-gray-400"
+>
+	<form
+		id="form-budget"
+		action="/search-availability-json"
+		method="POST"
+	>
+		<div class="flex gap-2 max-w-lg mx-auto">
+			<label
+				for="budget-start"
+				class="mb-5"
+			>
+				<span class="text-gray-600"
+					>Check-in Date</span
+				>
+				<input
+					type="text"
+					name="budget-start"
+					id="budget-start"
+					class="w-full text-gray-800 rounded border border-gray-300 bg-white p-3 shadow shadow-gray-100 mt-2 outline-none focus:outline-gray-600 text-neutral-800"
+					placeholder="yyyy-mm-dd"
+					required
+				/>
+			</label>
+			<label
+				for="budget-end"
+				class="mb-5"
+			>
+				<span class="text-gray-600"
+					>Check-out Date</span
+				>
+				<input
+					type="text"
+					name="budget-end"
+					id="budget-end"
+					class="w-full text-gray-800 rounded border border-gray-300 bg-white p-3 shadow shadow-gray-100 mt-2 outline-none focus:outline-gray-600 text-neutral-800"
+					placeholder="yyyy-mm-dd"
+					required
+				/>
+			</label>
+		</div>
+		<div
+			class="flex items-center justify-center max-w-lg mx-auto"
+		>
+			<button
+				id="submit-button-budget"
+				type="submit"
+				class="lg:mt-3 bg-gray-500 px-4 py-3 rounded-md text-gray-100 w-full hover:bg-gray-400"
+			>
+				CHECK AVAILABILITY
+			</button>
+		</div>
+		<input
+			type="hidden"
+			name="csrf_token"
+			value="{{.CSRFToken}}"
+		/>
+	</form>
+</div>
+{{ end }}

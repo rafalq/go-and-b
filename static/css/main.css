@@ -1,0 +1,6 @@
+/* @tailwind base;
+@tailwind components;
+.button {
+	@apply inline-block p-2 rounded-md bg-[#ecb938 ];
+}
+@tailwind utilities; */

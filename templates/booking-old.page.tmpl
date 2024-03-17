@@ -1,0 +1,263 @@
+{{template "base" .}}
+
+{{define "js"}}
+<script>
+	const bookingFirstNameInput =
+		document.querySelector("#booking-first-name");
+
+	const bookingLastNameInput =
+		document.querySelector("#booking-last-name");
+
+	const bookingEmailInput =
+		document.querySelector("#booking-email");
+
+	const bookingPhoneInput =
+		document.querySelector("#booking-phone");
+
+	const bookingSubmitBtn = document.querySelector(
+		"#booking-submit-button"
+	);
+
+	bookingFirstNameInput.addEventListener(
+		"focus",
+		() => {
+			clearErrors(
+				"booking-first-name",
+				"booking-first-name-error-message"
+			);
+		}
+	);
+
+	bookingLastNameInput.addEventListener(
+		"focus",
+		() => {
+			clearErrors(
+				"booking-last-name",
+				"booking-last-name-error-message"
+			);
+		}
+	);
+
+	bookingEmailInput.addEventListener(
+		"focus",
+		() => {
+			clearErrors(
+				"booking-email",
+				"booking-email-error-message"
+			);
+		}
+	);
+
+	bookingPhoneInput.addEventListener(
+		"focus",
+		() => {
+			clearErrors(
+				"booking-phone",
+				"booking-phone-error-message"
+			);
+		}
+	);
+
+	bookingSubmitBtn.addEventListener(
+		"click",
+		(event) => {
+			event.preventDefault();
+			validate(
+				"booking-first-name",
+				"booking-first-name-error-message",
+				40
+			);
+			validate(
+				"booking-last-name",
+				"booking-last-name-error-message",
+				40
+			);
+			validate(
+				"booking-email",
+				"booking-email-error-message"
+			);
+			validate(
+				"booking-phone",
+				"booking-phone-error-message"
+			);
+		}
+	);
+
+	function clearErrors(
+		inputSelectorName,
+		errorMessageSelectorName
+	) {
+		const inputEl = document.querySelector(
+			`#${inputSelectorName}`
+		);
+		const labelEl = document.querySelector(
+			`label[for="${inputSelectorName}"]`
+		);
+		const errorMsgEl = document.querySelector(
+			`#${errorMessageSelectorName}`
+		);
+		labelEl.classList.remove("text-red-500");
+		inputEl.classList.remove("bg-red-100");
+		//inptEl.classList.remove("outline-red-600");
+		errorMsgEl.textContent = "";
+	}
+
+	function validate(
+		inputSelectorName,
+		errorMessageSelectorName,
+		charNum
+	) {
+		const inputEl = document.querySelector(
+			`#${inputSelectorName}`
+		);
+		const labelEl = document.querySelector(
+			`label[for="${inputSelectorName}"]`
+		);
+		const errorMsgEl = document.querySelector(
+			`#${errorMessageSelectorName}`
+		);
+		const errorArr = [];
+		const valLength = inputEl.value.trim().length;
+		if (valLength <= 0) {
+			errorArr.push("Field required");
+		}
+		if (charNum && valLength > charNum) {
+			errorArr.push(
+				`Too many charaters - max ${charNum}`
+			);
+		}
+
+		const errorMsg = errorArr.join(" | ");
+
+		if (!!errorMsg) {
+			labelEl.classList.add("text-red-500");
+			inputEl.classList.add("bg-red-100");
+			// inputEl.classList.add("outline-red-600");
+			errorMsgEl.textContent = errorMsg;
+		}
+	}
+</script>
+{{ end }}
+
+{{define "content"}}
+
+<form
+	id="booking-form"
+	class="max-w-sm mx-auto"
+>
+	<div class="mb-4">
+		<label
+			for="booking-first-name"
+			class="block mb-2 text-sm font-medium text-gray-900"
+			>First Name<span class="text-red-500"
+				>*</span
+			></label
+		>
+		<input
+			aria-required="true"
+			type="text"
+			id="booking-first-name"
+			name="booking-first-name"
+			class="shadow-sm bg-gray-50 border border-gray-300 outline-none text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+			placeholder=""
+		/>
+		<p
+			id="booking-first-name-error-message"
+			class="text-red-500 text-xs ml-1 mt-2 h-full"
+		></p>
+	</div>
+	<div class="mb-4">
+		<label
+			for="booking-last-name"
+			class="block mb-2 text-sm font-medium text-gray-900"
+			>Last Name<span class="text-red-500"
+				>*</span
+			></label
+		>
+		<input
+			aria-required="true"
+			type="text"
+			id="booking-last-name"
+			name="booking-last-name"
+			class="shadow-sm bg-gray-50 border border-gray-300 outline-none text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+			placeholder=""
+		/>
+		<p
+			id="booking-last-name-error-message"
+			class="text-red-500 text-xs ml-1 mt-2 h-full"
+		></p>
+	</div>
+	<div class="mb-4">
+		<label
+			for="booking-email"
+			class="block mb-2 text-sm font-medium text-gray-900"
+			>Your email<span class="text-red-500"
+				>*</span
+			></label
+		>
+		<input
+			type="booking-email"
+			id="booking-email"
+			class="shadow-sm bg-gray-50 border border-gray-300 outline-none text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+			placeholder="name@email.com"
+		/>
+		<p
+			id="booking-email-error-message"
+			class="text-red-500 text-xs ml-1 mt-2 h-full"
+		></p>
+	</div>
+	<div class="mb-4">
+		<label
+			for="booking-phone"
+			class="block mb-2 text-sm font-medium text-gray-900"
+			>Phone<span class="text-red-500"
+				>*</span
+			></label
+		>
+		<input
+			aria-required="true"
+			type="text"
+			id="booking-phone"
+			name="booking-phone"
+			class="shadow-sm bg-gray-50 border border-gray-300 outline-none text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+			placeholder=""
+		/>
+		<p
+			id="booking-phone-error-message"
+			class="text-red-500 text-xs ml-1 mt-2 h-full"
+		></p>
+	</div>
+	<div class="flex items-start mb-4">
+		<div class="flex items-center h-5">
+			<input
+				required
+				aria-required="true"
+				id="booking-terms"
+				name="booking-terms"
+				type="checkbox"
+				value=""
+				class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-4 focus:ring-blue-300"
+			/>
+		</div>
+		<label
+			for="booking-terms"
+			class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+			>I agree with the
+			<a
+				href="#"
+				class="text-blue-600 hover:underline dark:text-blue-500"
+				>terms and conditions</a
+			><span class="text-red-500">*</span></label
+		>
+	</div>
+	<div class="flex justify-end w-full mt-6">
+		<button
+			id="booking-submit-button"
+			type="submit"
+			class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+		>
+			BOOK ROOM
+		</button>
+	</div>
+</form>
+{{ end }}

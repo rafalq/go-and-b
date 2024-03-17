@@ -1,0 +1,206 @@
+{{template "base" .}}
+
+{{define "css"}}
+<style type="text/tailwindcss">
+	@tailwind base;
+	@tailwind components;
+
+	.tooltip {
+		@apply invisible absolute;
+	}
+
+	.has-tooltip:hover .tooltip {
+		@apply visible z-50;
+	}
+
+	@tailwind utilities;
+</style>
+{{ end }}
+
+{{define "js"}}
+
+<script src="../static/js/form/validateForm.js"></script>
+<script>
+	const fields = [
+		{
+			name: "email",
+			type: "input",
+			validators: ["required", "email"],
+		},
+		{
+			name: "password",
+			type: "input",
+			validators: ["required", "password"],
+		}
+	];
+  const loginForm = document.getElementById(
+		"login-form"
+	);
+
+	const validator = new FormValidator(
+		loginForm,
+		fields,
+		"login"
+	);
+
+	validator.validateOnEntry();
+	validator.validateAndSubmitOnClick(
+		"login-submit-button"
+	);
+
+  // show / hide password
+  const showPasswordIconEl = document.getElementById("login-show-password-icon");
+	const hidePasswordIconEl = document.getElementById("login-hide-password-icon");
+  const passwordInputEl = document.getElementById("login-password")
+
+  showPasswordIconEl.addEventListener(
+    "click",
+    (event) => {
+      passwordInputEl.type = "text"    
+      showPasswordIconEl.classList.add("hidden");
+      hidePasswordIconEl.classList.remove(
+        "hidden"
+      );
+    }
+  );
+
+	hidePasswordIconEl.addEventListener(
+    "click",
+    (event) => {
+      passwordInputEl.type = "password";
+      showPasswordIconEl.classList.remove(
+        "hidden"
+      );
+      hidePasswordIconEl.classList.add("hidden");
+    }
+	);
+</script>
+{{ end }}
+
+{{define "content"}}
+<section
+	class="container px-4 mx-auto w-full sm:w-3/4 md:w-1/2 xl:w-1/3 bg-white py-4"
+>
+	<p
+		class="uppercase text-center font-bold text-gray-800 text-xl"
+	>
+		login
+	</p>
+	<form
+		action="/login"
+		method="POST"
+		id="login-form"
+		class="w-full mx-auto py-10 px-4 flex flex-col gap-4"
+	>
+		<input
+			type="hidden"
+			name="csrf_token"
+			value="{{.CSRFToken}}"
+		/>
+		<div>
+			<label
+				for="login-email"
+				class="block mb-2 text-sm font-medium 
+          {{ if .Form.Errors.Get `login-email` }} 
+            text-red-500 
+          {{ else }} 
+            text-gray-700 
+          {{ end }}"
+				>Email
+				<div class="has-tooltip inline">
+					<span
+						class="tooltip rounded shadow-sm p-1 bg-gray-50 text-red-400 -mt-8"
+						>Field required</span
+					>
+					<span class="text-red-500">*</span>
+				</div>
+			</label>
+			<input
+				type="text"
+				id="login-email"
+				name="login-email"
+				
+				class="shadow-sm bg-gray-50 border border-gray-300 outline-none text-gray-900 text-sm rounded-lg 
+          {{ if .Form.Errors.Get `login-email` }} 
+            bg-red-100 outline-red-600 
+          {{ end }} 
+          focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+			/>
+			<p
+				id="login-email-error-message"
+				class="text-red-500 text-xs mt-2 h-full"
+			>
+				{{ with .Form.Errors.Get "login-email"}}
+				&bull; {{.}}
+				{{ end }}
+			</p>
+		</div>
+		<div>
+			<label
+				for="login-password"
+				class="block mb-2 text-sm font-medium 
+          {{ if .Form.Errors.Get `login-password` }} 
+            text-red-500 
+          {{ else }} 
+            text-gray-700 
+          {{ end }}"
+				>Password
+				<div class="has-tooltip inline">
+					<span
+						class="tooltip rounded shadow-sm p-1 bg-gray-50 text-red-400 -mt-8"
+						>Field required</span
+					>
+					<span class="text-red-500">*</span>
+				</div>
+			</label>
+      <div class="flex gap-2 items-center">
+        <input
+          type="password"
+          id="login-password"
+          name="login-password"
+          
+          class="shadow-sm bg-gray-50 border border-gray-300 outline-none text-gray-900 text-sm rounded-lg 
+            {{ if .Form.Errors.Get `login-password` }} 
+              bg-red-100 outline-red-600 
+            {{ end }} 
+            focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+        />
+        <div id="login-show-password-icon" class="has-tooltip inline relative">
+          <span class="tooltip text-sm rounded shadow-sm p-2 bg-gray-100 w-100 text-gray-600 absolute bottom-6 right-0">Show</span>
+          <svg class="cursor-pointer" fill="none" height="18" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><g stroke="gray" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m1 12s4-8 11-8 11 8 11 8"/><path d="m1 12s4 8 11 8 11-8 11-8"/><circle cx="12" cy="12" r="3"/></g></svg>
+        </div>
+        <div id="login-hide-password-icon" class="has-tooltip inline relative hidden">
+            <span class="tooltip rounded shadow-sm p-2 bg-gray-100 text-sm text-gray-600 absolute bottom-6 right-0">Hide</span>
+            <svg class="cursor-pointer" height="26" clip-rule="evenodd" fill-rule="evenodd" 
+              stroke-linejoin="round" stroke-miterlimit="2" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+              <path d="m-960-256h1280v800h-1280z"  fill="none"/>
+              <path d="m13.673 10.345-3.097 3.096 39.853 39.854 3.097-3.097z" fill="gray"/>
+              <path d="m17.119 19.984 2.915 2.915c-3.191 2.717-5.732 6.099-7.374 9.058l-.005.01c4.573 7.646 11.829 14.872 20.987 13.776 2.472-.296 4.778-1.141 6.885-2.35l2.951 2.95c-4.107 2.636-8.815 4.032-13.916 3.342-9.198-1.244-16.719-8.788-21.46-17.648 2.226-4.479 5.271-8.764 9.017-12.053zm6.63-4.32c2.572-1.146 5.355-1.82 8.327-1.868.165-.001 2.124.092 3.012.238.557.092 1.112.207 1.659.35 8.725 2.273 15.189 10.054 19.253 17.653-1.705 3.443-3.938 6.398-6.601 9.277l-2.827-2.827c1.967-2.12 3.622-4.161 4.885-6.45 0 0-1.285-2.361-2.248-3.643-.619-.824-1.27-1.624-1.954-2.395-.54-.608-2.637-2.673-3.136-3.103-3.348-2.879-7.279-5.138-11.994-5.1-1.826.029-3.582.389-5.249.995z" fill="gray" fill-rule="nonzero"/>
+              <path d="m25.054 27.92 2.399 2.398c-.157.477-.243.987-.243 1.516 0 2.672 2.169 4.841 4.841 4.841.529 0 1.039-.085 1.516-.243l2.399 2.399c-1.158.65-2.494 1.02-3.915 1.02-4.425 0-8.017-3.592-8.017-8.017 0-1.421.371-2.756 1.02-3.914zm6.849-4.101c.049-.001.099-.002.148-.002 4.425 0 8.017 3.593 8.017 8.017 0 .05 0 .099-.001.148z" fill="gray"/>
+          </svg>
+        </div>
+      </div>
+			<p
+				id="login-password-error-message"
+				class="text-red-500 text-xs mt-2 h-full"
+			>
+				{{ with .Form.Errors.Get "login-password"}}
+				&bull; {{.}}
+				{{ end }}
+			</p>
+		</div>
+		<div class="flex justify-end w-full mt-6">
+			<button
+				id="login-submit-button"
+				type="button"
+				class="flex gap-2 items-center uppercase text-white bg-blue-700 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+			>
+        <svg width="16px" height="16px" viewBox="0 -0.5 25 25" fill="#ffffff" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M18.455 9.8834L7.063 4.1434C6.76535 3.96928 6.40109 3.95274 6.08888 4.09916C5.77667 4.24558 5.55647 4.53621 5.5 4.8764C5.5039 4.98942 5.53114 5.10041 5.58 5.2024L7.749 10.4424C7.85786 10.7903 7.91711 11.1519 7.925 11.5164C7.91714 11.8809 7.85789 12.2425 7.749 12.5904L5.58 17.8304C5.53114 17.9324 5.5039 18.0434 5.5 18.1564C5.55687 18.4961 5.77703 18.7862 6.0889 18.9323C6.40078 19.0785 6.76456 19.062 7.062 18.8884L18.455 13.1484C19.0903 12.8533 19.4967 12.2164 19.4967 11.5159C19.4967 10.8154 19.0903 10.1785 18.455 9.8834V9.8834Z" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+				submit
+			</button>
+		</div>
+	</form>
+</section>
+{{ end }}
